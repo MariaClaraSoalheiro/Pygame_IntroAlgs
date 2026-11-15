@@ -4,7 +4,7 @@
 
 **Nome:**
 
-> AI, Please!.
+AI, Please!.
 
 ## 2. Integrantes do grupo
 
@@ -17,29 +17,29 @@
 
 **Tema:**
 
->  Inteligência Artificial e identificação de conteúdos gerados por IA.
+Inteligência Artificial e identificação de conteúdos gerados por IA.
 
 **Como esse tema se relaciona com o jogo?**
 
-> O jogador deverá investigar publicações digitais para identificar se os conteúdos foram produzidos por seres humanos ou gerados por inteligência artificial, considerando pistas como autoria, fontes, datas e outras informações disponíveis. O jogo mostrará que nem sempre é possível determinar com segurança a origem de um conteúdo, incentivando a análise crítica, o uso responsável da IA e o reconhecimento da falta de evidências.
+O jogador deverá investigar publicações digitais para identificar se os conteúdos foram produzidos por seres humanos ou gerados por inteligência artificial, considerando pistas como autoria, fontes, datas e outras informações disponíveis. O jogo mostrará que nem sempre é possível determinar com segurança a origem de um conteúdo, incentivando a análise crítica, o uso responsável da IA e o reconhecimento da falta de evidências.
 
 ## 4. Tipo de jogo
 
 **Tipo escolhido:**
 
-> Jogo de investigação e classificação de conteúdos digitais, inspirado em mecânicas de inspeção de documentos.
+Jogo de investigação e classificação de conteúdos digitais, inspirado em mecânicas de inspeção de documentos.
 
 ## 5. Descrição geral do jogo
 
 **Descrição:**
 
-> *AI, Please!* é um jogo inspirado na dinâmica de inspeção de *Papers, Please*, no qual o jogador atua em um departamento responsável por verificar a origem de conteúdos digitais. A cada rodada, será apresentada uma publicação contendo informações complementares, como fonte, data, horário, autoria e outros elementos que auxiliem na investigação. O jogador utilizará ferramentas simples disponíveis em sua bancada para consultar pistas e escolher uma das três classificações: HUMANO, GERADO POR IA ou INCONCLUSIVO. Serão apresentados cinco casos previamente preparados. As respostas serão registradas sem revelar se estão corretas durante as rodadas, e o resultado será mostrado somente ao final da partida.
+*AI, Please!* é um jogo inspirado na dinâmica de inspeção de *Papers, Please*, no qual o jogador atua em um departamento responsável por verificar a origem de conteúdos digitais. A cada rodada, será apresentada uma publicação contendo informações complementares, como fonte, data, horário, autoria e outros elementos que auxiliem na investigação. O jogador utilizará ferramentas simples disponíveis em sua bancada para consultar pistas e escolher uma das três classificações: HUMANO, GERADO POR IA ou INCONCLUSIVO. Serão apresentados cinco casos previamente preparados. As respostas serão registradas sem revelar se estão corretas durante as rodadas, e o resultado será mostrado somente ao final da partida.
 
 ## 6. Objetivo do jogador
 
 **Objetivo:**
 
-> Investigar as evidências disponíveis e classificar corretamente pelo menos quatro das cinco publicações, distinguindo conteúdos produzidos por seres humanos, conteúdos gerados por inteligência artificial e situações em que as informações disponíveis são insuficientes para uma conclusão segura.
+Investigar as evidências disponíveis e classificar corretamente pelo menos quatro das cinco publicações, distinguindo conteúdos produzidos por seres humanos, conteúdos gerados por inteligência artificial e situações em que as informações disponíveis são insuficientes para uma conclusão segura.
 
 ## 7. Regras principais
 
@@ -53,13 +53,13 @@
 
 **Condição de vitória:**
 
-> O jogador vencerá ao concluir corretamente pelo menos quatro dos cinco casos apresentados, mantendo pelo menos uma vida ao final da partida. Ao alcançar esse objetivo, será exibida uma tela de vitória com a pontuação obtida.
+O jogador vencerá ao concluir corretamente pelo menos quatro dos cinco casos apresentados, mantendo pelo menos uma vida ao final da partida. Ao alcançar esse objetivo, será exibida uma tela de vitória com a pontuação obtida.
 
 ## 9. Condição de derrota ou encerramento
 
 **Condição de derrota ou encerramento:**
 
-> A partida terminará com derrota caso o jogador perca todas as três vidas ou conclua os cinco casos sem atingir o mínimo de quatro classificações corretas. Ao final, será apresentada uma tela com a pontuação total, o número de acertos e erros, o percentual de aproveitamento e a possibilidade de iniciar uma nova partida.
+A partida terminará com derrota caso o jogador perca todas as três vidas ou conclua os cinco casos sem atingir o mínimo de quatro classificações corretas. Ao final, será apresentada uma tela com a pontuação total, o número de acertos e erros, o percentual de aproveitamento e a possibilidade de iniciar uma nova partida.
 
 ## 10. Elementos previstos no jogo
 
@@ -72,7 +72,7 @@
 
 **Controles:**
 
-> O jogador utilizará o mouse para consultar as informações e ferramentas da bancada, selecionar uma das classificações: HUMANO, GERADO POR IA ou INCONCLUSIVO, e avançar para a próxima publicação.
+O jogador utilizará o mouse para consultar as informações e ferramentas da bancada, selecionar uma das classificações: HUMANO, GERADO POR IA ou INCONCLUSIVO, e avançar para a próxima publicação.
 
 ## 12. Principais dificuldades esperadas
 
@@ -84,7 +84,7 @@
 
 **Escopo mínimo:**
 
-> A versão mínima terá uma tela inicial, uma tela de investigação e uma tela final. Serão cadastrados cinco casos, cada um contendo uma publicação digital, informações complementares, pistas previamente definidas e uma classificação correta (HUMANO, GERADO POR IA ou INCONCLUSIVO). O jogador poderá consultar pistas e registrar sua escolha utilizando o mouse. O jogo controlará internamente três vidas, a pontuação e o número de casos analisados. Cada acerto renderá 10 pontos e cada erro reduzirá uma vida, sem informar imediatamente o resultado. A partida terminará ao concluir os cinco casos ou perder todas as vidas. Na tela final, serão apresentados a vitória ou derrota, a pontuação, os acertos, os erros, o percentual de aproveitamento e a opção de reiniciar.
+A versão mínima terá uma tela inicial, uma tela de investigação e uma tela final. Serão cadastrados cinco casos, cada um contendo uma publicação digital, informações complementares, pistas previamente definidas e uma classificação correta (HUMANO, GERADO POR IA ou INCONCLUSIVO). O jogador poderá consultar pistas e registrar sua escolha utilizando o mouse. O jogo controlará internamente três vidas, a pontuação e o número de casos analisados. Cada acerto renderá 10 pontos e cada erro reduzirá uma vida, sem informar imediatamente o resultado. A partida terminará ao concluir os cinco casos ou perder todas as vidas. Na tela final, serão apresentados a vitória ou derrota, a pontuação, os acertos, os erros, o percentual de aproveitamento e a opção de reiniciar.
 
 ## 14. Possíveis melhorias, caso haja tempo
 
@@ -94,4 +94,4 @@
 
 ## 15. Declaração de originalidade
 
-> O jogo AI, Please! será desenvolvido de forma autoral pelo grupo, utilizando Python, Pygame e o template oficial da disciplina. A proposta tem como inspiração a dinâmica de inspeção do jogo Papers, Please, mas apresentará temática, mecânicas, regras, desafios e implementação próprios, voltados à identificação de conteúdos gerados por inteligência artificial e à promoção de seu uso responsável. Caso sejam utilizados recursos externos, como imagens, sons ou fontes, suas respectivas origens e licenças, quando disponíveis, serão devidamente identificadas.
+O jogo AI, Please! será desenvolvido de forma autoral pelo grupo, utilizando Python, Pygame e o template oficial da disciplina. A proposta tem como inspiração a dinâmica de inspeção do jogo Papers, Please, mas apresentará temática, mecânicas, regras, desafios e implementação próprios, voltados à identificação de conteúdos gerados por inteligência artificial e à promoção de seu uso responsável. Caso sejam utilizados recursos externos, como imagens, sons ou fontes, suas respectivas origens e licenças, quando disponíveis, serão devidamente identificadas.
