@@ -4,7 +4,7 @@
 
 **Nome:**
 
-AI, Please!.
+AI, Please!
 
 ## 2. Integrantes do grupo
 
@@ -94,4 +94,4 @@ A versão mínima terá uma tela inicial, uma tela de investigação e uma tela 
 
 ## 15. Declaração de originalidade
 
-O jogo AI, Please! será desenvolvido de forma autoral pelo grupo, utilizando Python, Pygame e o template oficial da disciplina. A proposta tem como inspiração a dinâmica de inspeção do jogo Papers, Please, mas apresentará temática, mecânicas, regras, desafios e implementação próprios, voltados à identificação de conteúdos gerados por inteligência artificial e à promoção de seu uso responsável. Caso sejam utilizados recursos externos, como imagens, sons ou fontes, suas respectivas origens e licenças, quando disponíveis, serão devidamente identificadas.
+O jogo AI, Please! será desenvolvido de forma autoral pelo grupo, utilizando Python, Pygame e o template oficial da disciplina. A proposta tem como inspiração a dinâmica de inspeção do jogo Papers, Please, mas apresentará temática, mecânicas, regras, desafios e implementação próprios, voltados à identificação de conteúdos gerados por inteligência artificial e à promoção de seu uso responsável. Caso sejam utilizados recursos externos, como imagens, sons ou fontes, suas respectivas origens e licenças, quando disponíveis, serão identificadas no arquivo README.md.
