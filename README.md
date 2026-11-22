@@ -6,10 +6,10 @@ Este repositório é um template para os grupos da disciplina. A proposta é com
 
 ## Integrantes do grupo
 
-- Nome do integrante 1
-- Nome do integrante 2
-- Nome do integrante 3
-- Nome do integrante 4
+- Maria Clara Soalheiro Bessa
+- Mateus Evaristo
+- Priscilla Louzada Nesio
+- Ian Souza Maciel
 
 ## Estrutura do projeto
 
