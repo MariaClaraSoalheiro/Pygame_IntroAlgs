@@ -1,143 +1,136 @@
+
 import pygame
-
-from src.config import (
-    LARGURA_TELA,
-    ALTURA_TELA,
-    FPS,
-    TITULO_JOGO,
-    CINZA,
-    CAMINHO_RECORDE,
-    CAMINHO_SPRITES,
-)
-
-from src.funcoes import (
-    calcular_pontos,
-    jogador_perdeu,
-    limitar_valor,
-    verificar_colisao,
-    tomar_dano,
-)
-from src.sprites import pegar_sprite
-from src.dados import (
-    salvar_recorde,
-    carregar_recorde,
-)
+from src.sprites import GerenciadorSprites
+from src.dados import carregar_casos
 
 
-def executar_jogo():
-    """Executa o loop principal do jogo e controla estado, colisões e pontuação."""
-    pygame.init()
-    
+def executar_bancada(tela):
 
-    tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
-    pygame.display.set_caption(TITULO_JOGO)
+    largura = 800
+    altura = 600
 
-    relogio = pygame.time.Clock()
+    gerenciador = GerenciadorSprites(largura, altura)
+
+    casos = carregar_casos()
+    indice_caso = 1
+    caso_atual = casos[indice_caso]
+
+    imagem = pygame.image.load(caso_atual["imagem"]).convert_alpha()
+    imagem = pygame.transform.smoothscale(imagem, (300, 200))
+
+    fonte = pygame.font.SysFont(None, 48)
+    fonte_publicacao = pygame.font.SysFont(None, 28)
+    fonte_status = pygame.font.SysFont(None, 32)
+
+    pontuacao = 0
+    vidas = 3
+    mensagem = ""
+    fim_de_jogo = False
+
+    classificacoes = {
+        "HUMAN": "HUMAN",
+        "AI_GENERATED": "GERADO POR IA",
+        "INCONCLUSIVE": "INCONCLUSIVO"
+    }
+
     rodando = True
 
-    # 1. Carregando as imagens recortadas do Spritesheet
-
-
-    # Jogador: usando tamanho 110x110 para capturar o quadrado perfeitamente
-    player_image = pegar_sprite(CAMINHO_SPRITES, x=110, y=120, width=190, height=190, scale=0.5)
-
-    # Gema pequena: usando tamanho 64x64
-    gem_image    = pegar_sprite(CAMINHO_SPRITES, x=900, y=690, width=200, height=200, scale=0.5)
-
-    # Morcego: usando tamanho 180x120 por causa das asas abertas
-    bat_image    = pegar_sprite(CAMINHO_SPRITES, x=905, y=1060, width=200, height=130, scale=0.5)
-    
-    # 2. Criando a estrutura de Sprites usando Dicionários
-    jogador = {
-        "imagem": player_image,
-        "rect": player_image.get_rect(topleft=(100, 100))
-    }
-
-    gema = {
-        "imagem": gem_image,
-        "rect": gem_image.get_rect(topleft=(500, 300))
-    }
-    
-    inimigo = {
-        "imagem": bat_image,
-        "rect": bat_image.get_rect(topleft=(200, 500))
-    }
-
-    velocidade = 5
-    pontos = 0
-    vidas = 3
-    recorde = carregar_recorde(CAMINHO_RECORDE)
-
-    # Loop principal: processa entrada, atualiza estado e renderiza a cena.
     while rodando:
-        relogio.tick(FPS)
 
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 rodando = False
 
-        teclas = pygame.key.get_pressed()
+            resultado = gerenciador.tratar_evento_mouse(evento)
 
-        # Movimentação alterando direto os eixos X e Y do retângulo do jogador
-        if teclas[pygame.K_LEFT]:
-            jogador["rect"].x -= velocidade
-        if teclas[pygame.K_RIGHT]:
-            jogador["rect"].x += velocidade
-        if teclas[pygame.K_UP]:
-            jogador["rect"].y -= velocidade
-        if teclas[pygame.K_DOWN]:
-            jogador["rect"].y += velocidade
+            if resultado is not None and not fim_de_jogo:
 
-        # Limitando o jogador dentro das bordas da tela usando as propriedades do Rect
-        jogador["rect"].x = limitar_valor(jogador["rect"].x, 0, LARGURA_TELA - jogador["rect"].width)
-        jogador["rect"].y = limitar_valor(jogador["rect"].y, 0, ALTURA_TELA - jogador["rect"].height)
+                if resultado == "CONSULTAR_PISTAS":
+                    mensagem = "Consulta de pistas ainda nao disponivel."
 
-        # Verificação de colisão com a Gema (antigo 'item')
-        if verificar_colisao(jogador["rect"], gema["rect"]):
-            pontos = calcular_pontos(pontos, 10)
+                elif resultado in classificacoes:
 
-            # Move a gema de lugar ao coletar
-            gema["rect"].x += 80
-            gema["rect"].y += 50
+                    resposta = classificacoes[resultado]
 
-            # Se a gema sair da tela, volta para uma posição segura
-            if gema["rect"].x > LARGURA_TELA - gema["rect"].width:
-                gema["rect"].x = 50
-            if gema["rect"].y > ALTURA_TELA - gema["rect"].height:
-                gema["rect"].y = 50
+                    mensagem = ""
 
-        # Verificação de colisão com o Inimigo
-        if verificar_colisao(jogador["rect"], inimigo["rect"]):
-            vidas = tomar_dano(vidas, 1)
+                    if resultado != "INCONCLUSIVE":
 
-            # Afasta o inimigo ao colidir
-            inimigo["rect"].x += 80
-            inimigo["rect"].y += 50
+                        if resposta == caso_atual["classificacao"]:
+                            pontuacao += 10
+                        else:
+                            vidas -= 1
 
-            if inimigo["rect"].x > LARGURA_TELA - inimigo["rect"].width:
-                inimigo["rect"].x = 50
-            if inimigo["rect"].y > ALTURA_TELA - inimigo["rect"].height:
-                inimigo["rect"].y = 50
+                    # Verificando se o jogador ainda tem vidas.
+                    if vidas == 0:
+                        fim_de_jogo = True
 
-        # Regras de fim de jogo e recorde
-        if jogador_perdeu(vidas):
-            rodando = False
+                    else:
+                        # Avancando para o proximo caso.
+                        indice_caso += 1
 
-        if pontos > recorde:
-            recorde = pontos
-            salvar_recorde(CAMINHO_RECORDE, recorde)
+                        if indice_caso < len(casos):
 
-        pygame.display.set_caption(
-            f"{TITULO_JOGO} | Pontos: {pontos} | Recorde: {recorde} | Vidas: {vidas}"
+                            caso_atual = casos[indice_caso]
+
+                            imagem = pygame.image.load(
+                                caso_atual["imagem"]
+                            ).convert_alpha()
+
+                            imagem = pygame.transform.smoothscale(
+                                imagem, (300, 200)
+                            )
+
+                        else:
+                            fim_de_jogo = True
+
+        tela.fill((25, 25, 35))
+
+        # Exibindo a pontuacao e as vidas.
+        texto_pontos = fonte_status.render(
+            f"Pontos: {pontuacao}", False, (255, 255, 255)
         )
+        tela.blit(texto_pontos, texto_pontos.get_rect(center=(100, 35)))
 
-        tela.fill(CINZA)
+        texto_vidas = fonte_status.render(
+            f"Vidas: {vidas}", False, (255, 255, 255)
+        )
+        tela.blit(texto_vidas, texto_vidas.get_rect(center=(700, 35)))
 
-        # Desenhando os elementos na tela passando a imagem e o rect de cada dicionário
-        tela.blit(gema["imagem"], gema["rect"])
-        tela.blit(inimigo["imagem"], inimigo["rect"])
-        tela.blit(jogador["imagem"], jogador["rect"])
+        # Titulo da bancada.
+        texto = fonte.render(
+            "Bancada de Investigação", False, (255, 255, 255)
+        )
+        retangulo_texto = texto.get_rect(center=(largura // 2, 75))
+        tela.blit(texto, retangulo_texto)
+
+        # Exibindo a imagem da publicacao.
+        retangulo_imagem = imagem.get_rect(center=(largura // 2, 220))
+        tela.blit(imagem, retangulo_imagem)
+
+        # Exibindo a legenda da publicacao.
+        texto_publicacao = fonte_publicacao.render(
+            caso_atual["publicacao"], False, (255, 255, 255)
+        )
+        retangulo_publicacao = texto_publicacao.get_rect(
+            center=(largura // 2, 350)
+        )
+        tela.blit(texto_publicacao, retangulo_publicacao)
+
+        gerenciador.desenhar_elementos(tela)
+
+        if fim_de_jogo:
+            texto_mensagem = fonte.render(
+                "fim de jogo", False, (255, 100, 100)
+            )
+        else:
+            texto_mensagem = fonte_publicacao.render(
+                mensagem, False, (255, 255, 255)
+            )
+
+        retangulo_mensagem = texto_mensagem.get_rect(
+            center=(largura // 2, 530)
+        )
+        tela.blit(texto_mensagem, retangulo_mensagem)
 
         pygame.display.flip()
-
-    pygame.quit()

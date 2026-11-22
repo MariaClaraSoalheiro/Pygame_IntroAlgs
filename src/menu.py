@@ -1,48 +1,38 @@
 import pygame
 
-pygame.init()
 
-largura = 800
-altura = 600
+def executar_menu(tela):
 
-# criando a janela e definindo seu título.
-tela = pygame.display.set_mode((largura, altura))
-pygame.display.set_caption("AI, Please!")
+    largura = 800
+    altura = 600
 
-# fonte para o título.
-fonte_titulo = pygame.font.SysFont(None, 72)
+    fonte_titulo = pygame.font.SysFont(None, 72)
+    fonte_botao = pygame.font.SysFont(None, 36)
 
-rodando = True
+    botao_jogar = pygame.Rect(325, 400, 150, 50)
 
-while rodando:
+    rodando = True
 
-    ''' 1 - verificação de eventos '''
+    while rodando:
 
-    # neste for, a ideia principal é ficar conferindo
-    # se o jogador pediu para fechar a janela.
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
-            rodando = False
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                return False
 
-    ''' 2 - desenho dos elementos '''
+            if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+                if botao_jogar.collidepoint(evento.pos):
+                    return True
 
-    # o fill() preenche uma superfície com uma cor.
-    tela.fill((25, 25, 35))
+        tela.fill((25, 25, 35))
 
-    ''' TÍTULO '''
-    
-    # o render() transforma texto em superfície.
-    texto = fonte_titulo.render("AI, Please!", False, (255, 255, 255))
+        texto = fonte_titulo.render("AI, Please!", False, (255, 255, 255))
+        retangulo_texto = texto.get_rect(center=(largura // 2, altura // 3))
+        tela.blit(texto, retangulo_texto)
 
-    # para ajudar a manter o título no centro da tela, é usado o get_rect(),
-    # que retorna uma referência geométrica da superfície de texto.
-    # ele recebe center=(x, y), fazendo o centro dele aparecer nessa posição.
-    retangulo_texto = texto.get_rect(center=(largura // 2, altura // 3))
+        pygame.draw.rect(tela, (70, 130, 180), botao_jogar, border_radius=8)
 
-    # desenhando o título na tela.
-    tela.blit(texto, retangulo_texto)
+        texto_botao = fonte_botao.render("JOGAR", False, (255, 255, 255))
+        retangulo_botao = texto_botao.get_rect(center=botao_jogar.center)
+        tela.blit(texto_botao, retangulo_botao)
 
-    # atualização da tela.
-    pygame.display.flip()
-
-pygame.quit()
+        pygame.display.flip()
