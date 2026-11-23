@@ -1,13 +1,26 @@
-# Configurações centrais do jogo (tela, cores e caminhos de arquivos).
+# Configurações da janela
 LARGURA_TELA = 800
 ALTURA_TELA = 600
+TITULO_JOGO = "AI, Please!"
 FPS = 60
 
-TITULO_JOGO = "Projeto Final - Pygame"
+# Cores
+COR_FUNDO = (25, 25, 35)
+COR_TEXTO = (255, 255, 255)
+COR_ERRO = (255, 100, 100)
+COR_BOTAO_JOGAR = (70, 130, 180)
 
-BRANCO = (255, 255, 255)
-PRETO = (0, 0, 0)
-CINZA = (212,212,212)
+# Configurações da partida
+VIDAS_INICIAIS = 3
+PONTOS_POR_ACERTO = 10
+TAMANHO_BOTAO_MENU = (150, 50)
 
-CAMINHO_RECORDE = "data/recorde.txt"
-CAMINHO_SPRITES = "assets/imagens/spritesheet.bmp"
+# Configurações das imagens
+TAMANHO_IMAGEM = (300, 200)
+
+# Tamanhos das fontes
+FONTE_TITULO_MENU = 72
+FONTE_BOTAO_MENU = 36
+FONTE_TITULO_JOGO = 48
+FONTE_PUBLICACAO = 28
+FONTE_STATUS = 32

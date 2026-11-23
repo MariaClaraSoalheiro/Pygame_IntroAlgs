@@ -1,15 +1,24 @@
 # Assets
 
-Esta pasta centraliza os recursos visuais e sonoros do jogo.
+Esta pasta reúne os recursos visuais utilizados no jogo **AI, Please!**. Nesta versão inicial, são utilizadas imagens geradas por inteligência artificial e fotografias reais.
 
 ## Organização
 
-- `imagens/`: sprites, fundos e ícones.
-- `sons/`: efeitos sonoros e músicas.
-- `fontes/`: fontes tipográficas customizadas.
+- `imagens/`: contém as imagens utilizadas como publicações durante as partidas.
 
-## Boas práticas
+## Imagens utilizadas
 
-- Use nomes de arquivo descritivos e sem espaços.
-- Prefira formatos leves (`.png`, `.ogg`, `.wav`, `.ttf`).
-- Registre a origem dos assets utilizados (quando externos).
+| Arquivo | Tipo | Descrição |
+|---|---|---|
+| `caso1.png` | Gerada por IA | Gato em uma cena exagerada e humorística. |
+| `caso2.png` | Fotografia real | Fotografia de um gato. |
+| `caso3.png` | Gerada por IA | Castelo com um OVNI abduzindo uma vaca. |
+| `caso4.png` | Fotografia real | Farol iluminado durante a noite. |
+
+As imagens geradas por IA foram criadas especificamente para o projeto.
+
+As fotografias reais foram obtidas no Wikimedia Commons e disponibilizadas sob licença CC0 (Creative Commons Zero), que permite sua reutilização sem necessidade de autorização.
+
+## Observações
+
+- As imagens são utilizadas como publicações para investigação durante o jogo.

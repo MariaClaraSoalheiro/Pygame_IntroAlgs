@@ -1,38 +1,52 @@
+
 import pygame
 
+from src.config import (
+    COR_FUNDO,
+    COR_TEXTO,
+    COR_BOTAO_JOGAR,
+    FONTE_TITULO_MENU,
+    FONTE_BOTAO_MENU,
+    TAMANHO_BOTAO_MENU
+)
 
-def executar_menu(tela):
+from src.funcoes import desenhar_texto_centralizado
 
-    largura = 800
-    altura = 600
 
-    fonte_titulo = pygame.font.SysFont(None, 72)
-    fonte_botao = pygame.font.SysFont(None, 36)
+def criar_menu(largura, altura):
 
-    botao_jogar = pygame.Rect(325, 400, 150, 50)
+    fonte_titulo = pygame.font.SysFont(None, FONTE_TITULO_MENU)
+    fonte_botao = pygame.font.SysFont(None, FONTE_BOTAO_MENU)
 
-    rodando = True
+    botao_jogar = pygame.Rect(0, 0, *TAMANHO_BOTAO_MENU)
+    botao_jogar.center = (largura // 2, int(altura * 2 / 3))
 
-    while rodando:
+    return fonte_titulo, fonte_botao, botao_jogar
 
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                return False
 
-            if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
-                if botao_jogar.collidepoint(evento.pos):
-                    return True
+def tratar_evento_menu(evento, botao_jogar):
 
-        tela.fill((25, 25, 35))
+    if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+        if botao_jogar.collidepoint(evento.pos):
+            return True
 
-        texto = fonte_titulo.render("AI, Please!", False, (255, 255, 255))
-        retangulo_texto = texto.get_rect(center=(largura // 2, altura // 3))
-        tela.blit(texto, retangulo_texto)
+    return False
 
-        pygame.draw.rect(tela, (70, 130, 180), botao_jogar, border_radius=8)
 
-        texto_botao = fonte_botao.render("JOGAR", False, (255, 255, 255))
-        retangulo_botao = texto_botao.get_rect(center=botao_jogar.center)
-        tela.blit(texto_botao, retangulo_botao)
+def desenhar_menu(tela, largura, altura, fonte_titulo, fonte_botao, botao_jogar):
 
-        pygame.display.flip()
+    tela.fill(COR_FUNDO)
+
+    desenhar_texto_centralizado(
+        tela, "AI, Please!", fonte_titulo,
+        COR_TEXTO, (largura // 2, altura // 3)
+    )
+
+    pygame.draw.rect(
+        tela, COR_BOTAO_JOGAR, botao_jogar, border_radius=8
+    )
+
+    desenhar_texto_centralizado(
+        tela, "JOGAR", fonte_botao,
+        COR_TEXTO, botao_jogar.center
+    )

@@ -1,27 +1,15 @@
-def calcular_pontos(pontos_atual, pontos_ganhos):
-    """Soma os pontos ganhos à pontuação atual."""
-    return pontos_atual + pontos_ganhos
+import pygame
 
 
-def tomar_dano(vida_atual, dano):
-    """Reduz a vida atual com base no dano recebido."""
-    return vida_atual - dano
+def carregar_imagem(caminho, tamanho):
+    imagem = pygame.image.load(caminho).convert_alpha()
+    imagem = pygame.transform.smoothscale(imagem, tamanho)
+
+    return imagem
 
 
-def jogador_perdeu(vidas):
-    """Indica se o jogador ficou sem vidas."""
-    return vidas <= 0
+def desenhar_texto_centralizado(tela, texto, fonte, cor, posicao):
+    superficie = fonte.render(texto, False, cor)
+    retangulo = superficie.get_rect(center=posicao)
 
-
-def limitar_valor(valor, minimo, maximo):
-    """Mantém um valor dentro do intervalo [minimo, maximo]."""
-    if valor < minimo:
-        return minimo
-    if valor > maximo:
-        return maximo
-    return valor
-
-
-def verificar_colisao(retangulo_1, retangulo_2):
-    """Verifica sobreposição entre dois retângulos do Pygame."""
-    return retangulo_1.colliderect(retangulo_2)
+    tela.blit(superficie, retangulo)

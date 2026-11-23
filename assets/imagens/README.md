@@ -1,13 +1,24 @@
-# Imagens
+# Assets
 
-Pasta destinada a sprites, fundos, icones e outros elementos visuais.
+Esta pasta reúne os recursos visuais utilizados no jogo **AI, Please!**. Nesta versão inicial, são utilizadas imagens geradas por inteligência artificial e fotografias reais.
 
-## Conteudo atual
+## Organização
 
-- `spritesheet.bmp`: spritesheet base do template.
+- `imagens/`: contém as imagens utilizadas como publicações durante as partidas.
 
-## Recomendações
+## Imagens utilizadas
 
-- Separe imagens por tema quando o projeto crescer.
-- Mantenha dimensoes e padroes consistentes para facilitar colisao e animacao.
-- Prefira formatos com transparencia quando necessario (ex.: `.png`).
+| Arquivo | Tipo | Descrição |
+|---|---|---|
+| `caso1.png` | Gerada por IA | Gato em uma cena exagerada e humorística. |
+| `caso2.png` | Fotografia real | Fotografia de um gato. |
+| `caso3.png` | Gerada por IA | Castelo com um OVNI abduzindo uma vaca. |
+| `caso4.png` | Fotografia real | Farol iluminado durante a noite. |
+
+As imagens geradas por IA foram criadas especificamente para o projeto.
+
+As fotografias reais foram obtidas no Wikimedia Commons e disponibilizadas sob licença CC0 (Creative Commons Zero), que permite sua reutilização sem necessidade de autorização.
+
+## Observações
+
+- As imagens são utilizadas como publicações para investigação durante o jogo.

@@ -1,8 +1,8 @@
-# Nome do Jogo
+# AI, Please!
 
-Projeto final da disciplina de Introdução a Algoritmos/Programação, desenvolvido com Python e Pygame.
+Projeto da disciplina de Introdução a Algoritmos, desenvolvido em Python utilizando Pygame.
 
-Este repositório é um template para os grupos da disciplina. A proposta é começar com uma base funcional e evoluir o jogo ao longo do semestre.
+Esta é uma versão inicial e parcial do jogo, desenvolvida para apresentar sua mecânica principal e permitir a execução e o acompanhamento do projeto durante as aulas.
 
 ## Integrantes do grupo
 
@@ -13,79 +13,66 @@ Este repositório é um template para os grupos da disciplina. A proposta é com
 
 ## Estrutura do projeto
 
-- `main.py`: ponto de entrada da aplicação.
-- `src/`: código-fonte principal do jogo (loop, regras, sprites e dados).
-- `assets/`: imagens, fontes e sons.
-- `data/`: arquivos persistentes (recorde/ranking).
-- `tests/`: testes unitários com `pytest`.
-- `docs/`: documentação do projeto, incluindo proposta inicial.
+- `main.py`: ponto de entrada e controlador principal da aplicação.
+- `src/`: contém os módulos principais do jogo.
+- `assets/`: armazena os recursos visuais utilizados nas publicações.
+- `docs/`: documentação do projeto e proposta inicial.
 
 ## Descrição do jogo
 
-Descreva brevemente a ideia principal do jogo.
+AI, Please! é um jogo de investigação no qual o jogador analisa publicações digitais e tenta identificar se suas imagens foram criadas por seres humanos ou por inteligência artificial.
 
-Exemplo:
-
-> O jogo consiste em controlar um personagem que deve coletar moedas e evitar obstáculos. O jogador ganha pontos ao coletar itens e perde vidas ao colidir com obstáculos. A partida termina quando o tempo acaba ou quando o jogador perde todas as vidas.
+As publicações apresentam imagens acompanhadas de legendas, simulando conteúdos encontrados em redes sociais.
 
 ## Objetivo do jogador
 
-Explique o que o jogador precisa fazer para vencer ou avançar no jogo.
-
-Exemplo:
-
-> O objetivo é coletar a maior quantidade possível de itens antes que o tempo acabe, evitando colisões com os obstáculos.
+Analisar as publicações e classificá-las corretamente como HUMAN, AI GENERATED ou INCONCLUSIVE, acumulando pontos e tentando manter suas vidas até o final da partida.
 
 ## Regras do jogo
 
-Liste as principais regras do jogo.
-
-Exemplo:
-
-- O jogador se movimenta usando as setas do teclado.
-- Cada item coletado aumenta a pontuação.
-- Colidir com um obstáculo reduz a quantidade de vidas.
-- A partida termina quando o jogador perde todas as vidas ou quando o tempo acaba.
+- O jogador começa com 3 vidas.
+- Uma classificação correta entre HUMAN e AI GENERATED concede 10 pontos.
+- Uma classificação incorreta entre essas duas opções reduz uma vida.
+- A opção INCONCLUSIVE permite avançar sem ganhar pontos ou perder vidas.
+- Após cada classificação, uma nova publicação é apresentada.
+- A partida termina quando o jogador perde todas as vidas ou quando todos os casos são analisados.
 
 ## Controles
 
-Informe as teclas ou comandos utilizados no jogo.
-
-Exemplo:
-
-- Seta para cima: mover para cima
-- Seta para baixo: mover para baixo
-- Seta para esquerda: mover para esquerda
-- Seta para direita: mover para direita
-- Espaço: realizar ação
-- ESC: sair do jogo
+- **Mouse:** selecionar as opções de classificação.
+- **HUMAN:** classificar a publicação como conteúdo humano.
+- **AI GENERATED:** classificar a publicação como gerada por inteligência artificial.
+- **INCONCLUSIVE:** indicar que não existem evidências suficientes.
+- **Consultar Pistas e Informações:** recurso ainda em desenvolvimento.
+- **Fechar janela:** encerrar o jogo.
 
 ## Como executar o projeto
 
-### 1. Clonar o repositório
+Clone o repositório:
 
 ```bash
-git clone LINK_DO_REPOSITORIO
-cd NOME_DA_PASTA
-pip install -r requirements.txt
+git clone https://github.com/MariaClaraSoalheiro/Pygame_IntroAlgs.git
+cd Pygame_IntroAlgs
+```
+
+Instale o Pygame:
+
+```bash
+pip install pygame
+```
+
+Execute o jogo:
+
+```bash
 python main.py
 ```
 
-## Como executar os testes
+## Testes
 
-```bash
-python -m pytest
-```
+Os testes automatizados ainda não foram implementados nesta versão inicial. A execução e as interações do jogo são verificadas manualmente.
 
-## Checklist mínimo para entrega
+## Observações
 
-- Preencher este README com nome final, descrição real, regras e controles do jogo.
-- Atualizar `docs/proposta.MD` com a proposta do grupo.
-- Garantir que o jogo executa com `python main.py`.
-- Garantir que os testes passam com `pytest`.
-
-## Observações para os alunos
-
-- Mantenham o código organizado em módulos pequenos e com responsabilidade clara.
-- Comentem partes importantes da lógica, principalmente regras do jogo.
-- Registrem decisões técnicas no README do grupo ao longo do desenvolvimento.
+- Esta versão possui uma mecânica básica e recursos visuais simplificados.
+- Novas publicações, funcionalidades e melhorias serão adicionadas ao longo do desenvolvimento.
+- O código está organizado em módulos, separados conforme suas responsabilidades.
