@@ -25,3 +25,13 @@ def registrar_escolha(estado, resposta):
 
 def classificacao_valida(resultado, classificacoes):
     return resultado in classificacoes
+
+
+def verificar_resposta(resposta, classificacao_correta):
+    if resposta == "INCONCLUSIVO":
+        return "INCONCLUSIVO"
+
+    if resposta == classificacao_correta:
+        return "ACERTO"
+
+    return "ERRO"

@@ -8,6 +8,7 @@ from src.funcoes import (
     classificacao_valida,
     desenhar_texto_centralizado,
     registrar_escolha,
+    verificar_resposta,
 )
 
 from src.config import (
@@ -76,12 +77,11 @@ def tratar_evento_bancada(evento, estado):
 
         estado["mensagem"] = ""
 
-        if resultado != "INCONCLUSIVE":
-
-            if resposta == caso_atual["classificacao"]:
-                estado["pontuacao"] += PONTOS_POR_ACERTO
-            else:
-                estado["vidas"] -= 1
+        avaliacao = verificar_resposta(resposta, caso_atual["classificacao"])
+        if avaliacao == "ACERTO":
+            estado["pontuacao"] += PONTOS_POR_ACERTO
+        elif avaliacao == "ERRO":
+            estado["vidas"] -= 1
 
         # Verificando se o jogador ainda tem vidas.
         if estado["vidas"] == 0:
