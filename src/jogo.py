@@ -9,6 +9,7 @@ from src.funcoes import (
     classificacao_valida,
     desenhar_texto_centralizado,
     registrar_escolha,
+    resumir_partida,
     verificar_resposta,
 )
 
@@ -129,6 +130,17 @@ def desenhar_bancada(tela, largura, altura, estado):
         desenhar_texto_centralizado(
             tela, "fim de jogo", fonte,
             COR_ERRO, (largura // 2, 530)
+        )
+
+        resumo = resumir_partida(estado)
+        texto_resumo = (
+            f"Acertos: {resumo['ACERTO']}  "
+            f"Erros: {resumo['ERRO']}  "
+            f"Inconclusivas: {resumo['INCONCLUSIVO']}"
+        )
+        desenhar_texto_centralizado(
+            tela, texto_resumo, fonte_publicacao,
+            COR_TEXTO, (largura // 2, altura - 30)
         )
     else:
         desenhar_texto_centralizado(

@@ -56,3 +56,24 @@ def avancar_caso(estado):
         estado["fim_de_jogo"] = True
 
     estado["indice_caso"] = proximo_indice
+
+
+def resumir_partida(estado):
+    resumo = {
+        "ACERTO": 0,
+        "ERRO": 0,
+        "INCONCLUSIVO": 0,
+    }
+    escolhas = estado["escolhas"]
+
+    for caso in estado["casos"]:
+        id_caso = caso["id"]
+        if id_caso not in escolhas:
+            continue
+
+        resposta = escolhas[id_caso]
+        classificacao_correta = caso["classificacao"]
+        avaliacao = verificar_resposta(resposta, classificacao_correta)
+        resumo[avaliacao] += 1
+
+    return resumo
