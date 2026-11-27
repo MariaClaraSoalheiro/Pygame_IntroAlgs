@@ -15,9 +15,6 @@ VIDAS_INICIAIS = 3
 PONTOS_POR_ACERTO = 10
 TAMANHO_BOTAO_MENU = (150, 50)
 
-# Configurações das imagens
-TAMANHO_IMAGEM = (300, 200)
-
 # Tamanhos das fontes
 FONTE_TITULO_MENU = 72
 FONTE_BOTAO_MENU = 36

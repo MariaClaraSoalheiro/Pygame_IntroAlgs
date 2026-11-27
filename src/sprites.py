@@ -25,13 +25,25 @@ class Botao:
 class GerenciadorSprites:
     """Responsável por criar, organizar e gerenciar os elementos visuais da bancada de trabalho."""
     def __init__(self, largura_tela, altura_tela):
+        inicio_botoes = (largura_tela - 736) // 2
+        altura_botoes = altura_tela - 70
+
         # 1. Criar os três botões de classificação (HUMAN, AI GENERATED, INCONCLUSIVE)
-        self.botao_human = Botao(100, 450, 150, 40, (70, 130, 180), "HUMAN", (255, 255, 255))
-        self.botao_ai = Botao(270, 450, 150, 40, (205, 92, 92), "AI GENERATED", (255, 255, 255))
-        self.botao_inconclusive = Botao(440, 450, 150, 40, (112, 128, 144), "INCONCLUSIVE", (255, 255, 255))
+        self.botao_human = Botao(
+            inicio_botoes, altura_botoes, 150, 40, (70, 130, 180), "HUMAN", (255, 255, 255)
+        )
+        self.botao_ai = Botao(
+            inicio_botoes + 160, altura_botoes, 150, 40, (205, 92, 92), "AI GENERATED", (255, 255, 255)
+        )
+        self.botao_inconclusive = Botao(
+            inicio_botoes + 320, altura_botoes, 150, 40, (112, 128, 144), "INCONCLUSIVE", (255, 255, 255)
+        )
 
         # 2. Criar o botão de consultar pistas (ferramenta de investigação na bancada)
-        self.botao_consultar_pistas = Botao(100, 380, 490, 40, (46, 139, 87), "Consultar Pistas e Informações", (255, 255, 255))
+        self.botao_consultar_pistas = Botao(
+            inicio_botoes + 480, altura_botoes, 256, 40, (46, 139, 87),
+            "Consultar Pistas e Informações", (255, 255, 255)
+        )
 
         # Agrupando os elementos para facilitar a organização visual e loops de renderização
         self.botoes = [

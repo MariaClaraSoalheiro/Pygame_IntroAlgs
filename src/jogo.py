@@ -5,6 +5,7 @@ from src.sprites import GerenciadorSprites
 from src.dados import carregar_casos
 from src.funcoes import (
     avancar_caso,
+    carregar_cenario_bancada,
     carregar_imagem,
     classificacao_valida,
     desenhar_texto_centralizado,
@@ -19,7 +20,6 @@ from src.config import (
     COR_ERRO,
     VIDAS_INICIAIS,
     PONTOS_POR_ACERTO,
-    TAMANHO_IMAGEM,
     FONTE_TITULO_JOGO,
     FONTE_PUBLICACAO,
     FONTE_STATUS
@@ -34,7 +34,9 @@ def criar_bancada(largura, altura):
     indice_caso = 1
     caso_atual = casos[indice_caso]
 
-    imagem = carregar_imagem(caso_atual["imagem"], TAMANHO_IMAGEM)
+    cenario = carregar_cenario_bancada(largura, altura)
+    tamanho_monitor = cenario["area_monitor"].size
+    imagem = carregar_imagem(caso_atual["imagem"], tamanho_monitor, manter_proporcao=True)
 
     estado = {
         "gerenciador": gerenciador,
@@ -43,6 +45,7 @@ def criar_bancada(largura, altura):
         "caso_atual": caso_atual,
         "escolhas": {},
         "imagem": imagem,
+        "cenario": cenario,
         "pontuacao": 0,
         "vidas": VIDAS_INICIAIS,
         "mensagem": "",
@@ -91,6 +94,10 @@ def tratar_evento_bancada(evento, estado):
 def desenhar_bancada(tela, largura, altura, estado):
 
     tela.fill(COR_FUNDO)
+    cenario = estado["cenario"]
+    area_fundo = cenario["area_fundo"]
+    area_monitor = cenario["area_monitor"]
+    tela.blit(cenario["fundo"], area_fundo)
 
     fonte = estado["fonte"]
     fonte_publicacao = estado["fonte_publicacao"]
@@ -99,37 +106,36 @@ def desenhar_bancada(tela, largura, altura, estado):
     # Exibindo a pontuacao e as vidas.
     desenhar_texto_centralizado(
         tela, f"Pontos: {estado['pontuacao']}",
-        fonte_status, COR_TEXTO, (100, 35)
+        fonte_status, COR_TEXTO, (100, 22)
     )
 
     desenhar_texto_centralizado(
         tela, f"Vidas: {estado['vidas']}",
-        fonte_status, COR_TEXTO, (700, 35)
+        fonte_status, COR_TEXTO, (largura - 100, 22)
     )
 
     # Titulo da bancada.
     desenhar_texto_centralizado(
         tela, "Bancada de Investigacao",
-        fonte, COR_TEXTO, (largura // 2, 75)
+        fonte, COR_TEXTO, (largura // 2, 22)
     )
 
     # Exibindo a imagem da publicacao.
     imagem = estado["imagem"]
-    retangulo_imagem = imagem.get_rect(center=(largura // 2, 220))
+    retangulo_imagem = imagem.get_rect(center=area_monitor.center)
     tela.blit(imagem, retangulo_imagem)
+    tela.blit(cenario["contorno_monitor"], area_monitor)
 
     # Exibindo a legenda da publicacao.
     desenhar_texto_centralizado(
         tela, estado["caso_atual"]["publicacao"],
-        fonte_publicacao, COR_TEXTO, (largura // 2, 350)
+        fonte_publicacao, COR_TEXTO, (largura // 2, area_fundo.bottom + 18)
     )
-
-    estado["gerenciador"].desenhar_elementos(tela)
 
     if estado["fim_de_jogo"]:
         desenhar_texto_centralizado(
             tela, "fim de jogo", fonte,
-            COR_ERRO, (largura // 2, 530)
+            COR_ERRO, (largura // 2, altura - 59)
         )
 
         resumo = resumir_partida(estado)
@@ -143,7 +149,8 @@ def desenhar_bancada(tela, largura, altura, estado):
             COR_TEXTO, (largura // 2, altura - 30)
         )
     else:
+        estado["gerenciador"].desenhar_elementos(tela)
         desenhar_texto_centralizado(
             tela, estado["mensagem"], fonte_publicacao,
-            COR_TEXTO, (largura // 2, 530)
+            COR_TEXTO, (largura // 2, altura - 13)
         )
