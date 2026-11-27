@@ -3,7 +3,12 @@ import pygame
 
 from src.sprites import GerenciadorSprites
 from src.dados import carregar_casos
-from src.funcoes import carregar_imagem, desenhar_texto_centralizado, registrar_escolha
+from src.funcoes import (
+    carregar_imagem,
+    classificacao_valida,
+    desenhar_texto_centralizado,
+    registrar_escolha,
+)
 
 from src.config import (
     COR_FUNDO,
@@ -63,7 +68,7 @@ def tratar_evento_bancada(evento, estado):
     if resultado == "CONSULTAR_PISTAS":
         estado["mensagem"] = "Consulta de pistas ainda nao disponivel."
 
-    elif resultado in classificacoes:
+    elif classificacao_valida(resultado, classificacoes):
 
         resposta = classificacoes[resultado]
         registrar_escolha(estado, resposta)

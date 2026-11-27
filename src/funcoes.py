@@ -21,3 +21,7 @@ def registrar_escolha(estado, resposta):
     escolhas = estado["escolhas"]
 
     escolhas[id_caso] = resposta
+
+
+def classificacao_valida(resultado, classificacoes):
+    return resultado in classificacoes
