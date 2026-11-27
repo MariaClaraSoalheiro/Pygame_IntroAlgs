@@ -4,6 +4,7 @@ import pygame
 from src.sprites import GerenciadorSprites
 from src.dados import carregar_casos
 from src.funcoes import (
+    avancar_caso,
     carregar_imagem,
     classificacao_valida,
     desenhar_texto_centralizado,
@@ -83,25 +84,7 @@ def tratar_evento_bancada(evento, estado):
         elif avaliacao == "ERRO":
             estado["vidas"] -= 1
 
-        # Verificando se o jogador ainda tem vidas.
-        if estado["vidas"] == 0:
-            estado["fim_de_jogo"] = True
-
-        else:
-            # Avancando para o proximo caso.
-            estado["indice_caso"] += 1
-
-            if estado["indice_caso"] < len(estado["casos"]):
-
-                indice = estado["indice_caso"]
-                estado["caso_atual"] = estado["casos"][indice]
-
-                estado["imagem"] = carregar_imagem(
-                    estado["caso_atual"]["imagem"], TAMANHO_IMAGEM
-                )
-
-            else:
-                estado["fim_de_jogo"] = True
+        avancar_caso(estado)
 
 
 def desenhar_bancada(tela, largura, altura, estado):
