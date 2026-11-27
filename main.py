@@ -4,6 +4,7 @@ import pygame
 from src.config import LARGURA_TELA, ALTURA_TELA, TITULO_JOGO, FPS
 from src.menu import criar_menu, tratar_evento_menu, desenhar_menu
 from src.jogo import criar_bancada, tratar_evento_bancada, desenhar_bancada
+from src.funcoes import criar_tutorial, desenhar_tutorial, tratar_evento_tutorial
 
 
 def main():
@@ -22,6 +23,7 @@ def main():
 
     tela_atual = "menu"
     estado_bancada = None
+    estado_tutorial = None
 
     rodando = True
 
@@ -42,6 +44,12 @@ def main():
                     estado_bancada = criar_bancada(
                         LARGURA_TELA, ALTURA_TELA
                     )
+                    estado_tutorial = criar_tutorial(LARGURA_TELA, ALTURA_TELA)
+                    tela_atual = "tutorial"
+
+            elif tela_atual == "tutorial":
+                if tratar_evento_tutorial(evento, estado_tutorial):
+                    estado_tutorial = None
                     tela_atual = "bancada"
 
             elif tela_atual == "bancada":
@@ -58,11 +66,13 @@ def main():
                 fonte_titulo, fonte_botao, botao_jogar
             )
 
-        elif tela_atual == "bancada":
-
+        else:
             desenhar_bancada(
-                tela, LARGURA_TELA, ALTURA_TELA, estado_bancada
+                tela, LARGURA_TELA, ALTURA_TELA, estado_bancada,
+                interativa=tela_atual == "bancada"
             )
+            if tela_atual == "tutorial":
+                desenhar_tutorial(tela, estado_tutorial)
 
         pygame.display.flip()
 

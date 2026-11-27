@@ -8,6 +8,7 @@ from src.funcoes import (
     carregar_cenario_bancada,
     carregar_imagem,
     classificacao_valida,
+    desenhar_pistas,
     desenhar_texto_centralizado,
     obter_controle,
     registrar_escolha,
@@ -24,7 +25,6 @@ from src.config import (
     FONTE_TITULO_JOGO,
     FONTE_PUBLICACAO,
     FONTE_STATUS,
-    FONTE_ROTULOS,
     FONTE_RESUMO,
 )
 
@@ -50,12 +50,11 @@ def criar_bancada(largura, altura):
         "cenario": cenario,
         "pontuacao": 0,
         "vidas": VIDAS_INICIAIS,
-        "mensagem": "",
+        "pistas_visiveis": False,
         "fim_de_jogo": False,
         "fonte": pygame.font.SysFont(None, FONTE_TITULO_JOGO),
         "fonte_publicacao": pygame.font.SysFont(None, FONTE_PUBLICACAO),
         "fonte_status": pygame.font.SysFont(None, FONTE_STATUS),
-        "fonte_rotulos": pygame.font.Font(None, FONTE_ROTULOS),
         "fonte_resumo": pygame.font.Font(None, FONTE_RESUMO),
     }
 
@@ -76,7 +75,7 @@ def tratar_evento_bancada(evento, estado):
     }
 
     if resultado == "CONSULTAR_PISTAS":
-        estado["mensagem"] = "Consulta de pistas ainda nao disponivel."
+        estado["pistas_visiveis"] = not estado["pistas_visiveis"]
 
     elif classificacao_valida(resultado, classificacoes):
 
@@ -84,7 +83,7 @@ def tratar_evento_bancada(evento, estado):
         registrar_escolha(estado, resposta)
         caso_atual = estado["caso_atual"]
 
-        estado["mensagem"] = ""
+        estado["pistas_visiveis"] = False
 
         avaliacao = verificar_resposta(resposta, caso_atual["classificacao"])
         if avaliacao == "ACERTO":
@@ -95,7 +94,7 @@ def tratar_evento_bancada(evento, estado):
         avancar_caso(estado)
 
 
-def desenhar_bancada(tela, largura, altura, estado):
+def desenhar_bancada(tela, largura, altura, estado, interativa=True):
 
     tela.fill(COR_FUNDO)
     cenario = estado["cenario"]
@@ -104,7 +103,7 @@ def desenhar_bancada(tela, largura, altura, estado):
     areas_controles = cenario["areas_controles"]
 
     fundo = cenario["fundo"]
-    if not estado["fim_de_jogo"] and pygame.mouse.get_focused():
+    if interativa and not estado["fim_de_jogo"] and pygame.mouse.get_focused():
         controle = obter_controle(areas_controles, pygame.mouse.get_pos())
         fundo = cenario["fundos_hover"].get(controle, fundo)
     tela.blit(fundo, area_fundo)
@@ -136,10 +135,9 @@ def desenhar_bancada(tela, largura, altura, estado):
     tela.blit(imagem, retangulo_imagem)
     tela.blit(cenario["contorno_monitor"], area_monitor)
 
-    # A legenda e o aviso de pistas usam a mesma posição na arte.
-    legenda = estado["mensagem"] or estado["caso_atual"]["publicacao"]
+    caso_atual = estado["caso_atual"]
     desenhar_texto_centralizado(
-        tela, legenda, fonte_publicacao, COR_TEXTO,
+        tela, caso_atual["publicacao"], fonte_publicacao, COR_TEXTO,
         (area_fundo.centerx, area_fundo.bottom - 13)
     )
 
@@ -161,22 +159,5 @@ def desenhar_bancada(tela, largura, altura, estado):
             tela, texto_resumo, estado["fonte_resumo"],
             COR_TEXTO, (painel.centerx, painel.centery + 20)
         )
-    else:
-        fonte_rotulos = estado["fonte_rotulos"]
-        rotulos = {
-            "HUMAN": "Human",
-            "AI_GENERATED": "AI-generated",
-            "INCONCLUSIVE": "Inconclusive",
-        }
-        for acao, texto in rotulos.items():
-            area = areas_controles[acao]
-            desenhar_texto_centralizado(
-                tela, texto, fonte_rotulos, COR_TEXTO,
-                (area.centerx, area.bottom + 13)
-            )
-
-        pasta = areas_controles["CONSULTAR_PISTAS"]
-        desenhar_texto_centralizado(
-            tela, "Consultar pistas e informações", fonte_rotulos, COR_FUNDO,
-            (pasta.centerx, pasta.centery - 5)
-        )
+    elif estado["pistas_visiveis"]:
+        desenhar_pistas(tela, area_monitor, caso_atual, estado["fonte_resumo"])
