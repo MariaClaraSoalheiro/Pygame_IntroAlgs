@@ -11,28 +11,60 @@ def carregar_imagem(caminho, tamanho, manter_proporcao=False):
 
 
 def carregar_cenario_bancada(largura, altura):
-    fundo = pygame.image.load("assets/imagens/hud.png").convert()
-    area_disponivel = pygame.Rect(0, 44, largura, altura - 150)
+    fundo = pygame.image.load("assets/imagens/hud_normal.png").convert()
+    area_disponivel = pygame.Rect(0, 44, largura, altura - 44)
     area_fundo = fundo.get_rect().fit(area_disponivel)
     escala_x = area_fundo.width / fundo.get_width()
     escala_y = area_fundo.height / fundo.get_height()
 
-    # As coordenadas correspondem à abertura do monitor nos dois PNGs.
-    area_monitor = pygame.Rect(
-        area_fundo.x + round(527 * escala_x),
-        area_fundo.y + round(142 * escala_y),
-        round(607 * escala_x),
-        round(422 * escala_y),
-    )
+    # Coordenadas da tela e dos controles na arte original.
+    areas_originais = {
+        "monitor": (527, 142, 607, 422),
+        "HUMAN": (1203, 691, 110, 100),
+        "AI_GENERATED": (1335, 691, 115, 100),
+        "INCONCLUSIVE": (1472, 691, 116, 100),
+        "CONSULTAR_PISTAS": (24, 630, 447, 253),
+    }
+    areas = {}
+    for nome, (x, y, largura_area, altura_area) in areas_originais.items():
+        areas[nome] = pygame.Rect(
+            area_fundo.x + round(x * escala_x),
+            area_fundo.y + round(y * escala_y),
+            round(largura_area * escala_x),
+            round(altura_area * escala_y),
+        )
+
+    area_monitor = areas.pop("monitor")
     moldura = pygame.image.load("assets/imagens/computadortransparente.png").convert_alpha()
     contorno_interno = moldura.subsurface((243, 101, 957, 693))
+
+    arquivos_hover = {
+        "HUMAN": "hud_hover_verde.png",
+        "AI_GENERATED": "hud_hover_vermelho.png",
+        "INCONCLUSIVE": "hud_hover_amarelo.png",
+        "CONSULTAR_PISTAS": "hud_hover_pasta.png",
+    }
+    fundos_hover = {}
+    for acao, arquivo in arquivos_hover.items():
+        fundo_hover = pygame.image.load(f"assets/imagens/{arquivo}").convert()
+        fundos_hover[acao] = pygame.transform.smoothscale(fundo_hover, area_fundo.size)
 
     return {
         "fundo": pygame.transform.smoothscale(fundo, area_fundo.size),
         "area_fundo": area_fundo,
         "contorno_monitor": pygame.transform.smoothscale(contorno_interno, area_monitor.size),
         "area_monitor": area_monitor,
+        "areas_controles": areas,
+        "fundos_hover": fundos_hover,
     }
+
+
+def obter_controle(areas_controles, posicao_mouse):
+    for acao, area in areas_controles.items():
+        if area.collidepoint(posicao_mouse):
+            return acao
+
+    return None
 
 
 def desenhar_texto_centralizado(tela, texto, fonte, cor, posicao):

@@ -9,6 +9,7 @@ from src.funcoes import (
     carregar_imagem,
     classificacao_valida,
     desenhar_texto_centralizado,
+    obter_controle,
     registrar_escolha,
     resumir_partida,
     verificar_resposta,
@@ -22,19 +23,20 @@ from src.config import (
     PONTOS_POR_ACERTO,
     FONTE_TITULO_JOGO,
     FONTE_PUBLICACAO,
-    FONTE_STATUS
+    FONTE_STATUS,
+    FONTE_ROTULOS,
+    FONTE_RESUMO,
 )
 
 
 def criar_bancada(largura, altura):
-
-    gerenciador = GerenciadorSprites(largura, altura)
 
     casos = carregar_casos()
     indice_caso = 1
     caso_atual = casos[indice_caso]
 
     cenario = carregar_cenario_bancada(largura, altura)
+    gerenciador = GerenciadorSprites(cenario["areas_controles"])
     tamanho_monitor = cenario["area_monitor"].size
     imagem = carregar_imagem(caso_atual["imagem"], tamanho_monitor, manter_proporcao=True)
 
@@ -52,7 +54,9 @@ def criar_bancada(largura, altura):
         "fim_de_jogo": False,
         "fonte": pygame.font.SysFont(None, FONTE_TITULO_JOGO),
         "fonte_publicacao": pygame.font.SysFont(None, FONTE_PUBLICACAO),
-        "fonte_status": pygame.font.SysFont(None, FONTE_STATUS)
+        "fonte_status": pygame.font.SysFont(None, FONTE_STATUS),
+        "fonte_rotulos": pygame.font.Font(None, FONTE_ROTULOS),
+        "fonte_resumo": pygame.font.Font(None, FONTE_RESUMO),
     }
 
     return estado
@@ -97,7 +101,13 @@ def desenhar_bancada(tela, largura, altura, estado):
     cenario = estado["cenario"]
     area_fundo = cenario["area_fundo"]
     area_monitor = cenario["area_monitor"]
-    tela.blit(cenario["fundo"], area_fundo)
+    areas_controles = cenario["areas_controles"]
+
+    fundo = cenario["fundo"]
+    if not estado["fim_de_jogo"] and pygame.mouse.get_focused():
+        controle = obter_controle(areas_controles, pygame.mouse.get_pos())
+        fundo = cenario["fundos_hover"].get(controle, fundo)
+    tela.blit(fundo, area_fundo)
 
     fonte = estado["fonte"]
     fonte_publicacao = estado["fonte_publicacao"]
@@ -116,7 +126,7 @@ def desenhar_bancada(tela, largura, altura, estado):
 
     # Titulo da bancada.
     desenhar_texto_centralizado(
-        tela, "Bancada de Investigacao",
+        tela, "Bancada de Investigação",
         fonte, COR_TEXTO, (largura // 2, 22)
     )
 
@@ -126,16 +136,19 @@ def desenhar_bancada(tela, largura, altura, estado):
     tela.blit(imagem, retangulo_imagem)
     tela.blit(cenario["contorno_monitor"], area_monitor)
 
-    # Exibindo a legenda da publicacao.
+    # A legenda e o aviso de pistas usam a mesma posição na arte.
+    legenda = estado["mensagem"] or estado["caso_atual"]["publicacao"]
     desenhar_texto_centralizado(
-        tela, estado["caso_atual"]["publicacao"],
-        fonte_publicacao, COR_TEXTO, (largura // 2, area_fundo.bottom + 18)
+        tela, legenda, fonte_publicacao, COR_TEXTO,
+        (area_fundo.centerx, area_fundo.bottom - 13)
     )
 
     if estado["fim_de_jogo"]:
+        painel = area_monitor.inflate(-14, -118)
+        pygame.draw.rect(tela, COR_FUNDO, painel, border_radius=6)
         desenhar_texto_centralizado(
             tela, "fim de jogo", fonte,
-            COR_ERRO, (largura // 2, altura - 59)
+            COR_ERRO, (painel.centerx, painel.centery - 20)
         )
 
         resumo = resumir_partida(estado)
@@ -145,12 +158,25 @@ def desenhar_bancada(tela, largura, altura, estado):
             f"Inconclusivas: {resumo['INCONCLUSIVO']}"
         )
         desenhar_texto_centralizado(
-            tela, texto_resumo, fonte_publicacao,
-            COR_TEXTO, (largura // 2, altura - 30)
+            tela, texto_resumo, estado["fonte_resumo"],
+            COR_TEXTO, (painel.centerx, painel.centery + 20)
         )
     else:
-        estado["gerenciador"].desenhar_elementos(tela)
+        fonte_rotulos = estado["fonte_rotulos"]
+        rotulos = {
+            "HUMAN": "Human",
+            "AI_GENERATED": "AI-generated",
+            "INCONCLUSIVE": "Inconclusive",
+        }
+        for acao, texto in rotulos.items():
+            area = areas_controles[acao]
+            desenhar_texto_centralizado(
+                tela, texto, fonte_rotulos, COR_TEXTO,
+                (area.centerx, area.bottom + 13)
+            )
+
+        pasta = areas_controles["CONSULTAR_PISTAS"]
         desenhar_texto_centralizado(
-            tela, estado["mensagem"], fonte_publicacao,
-            COR_TEXTO, (largura // 2, altura - 13)
+            tela, "Consultar pistas e informações", fonte_rotulos, COR_FUNDO,
+            (pasta.centerx, pasta.centery - 5)
         )
