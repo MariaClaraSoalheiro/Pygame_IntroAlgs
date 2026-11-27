@@ -13,3 +13,11 @@ def desenhar_texto_centralizado(tela, texto, fonte, cor, posicao):
     retangulo = superficie.get_rect(center=posicao)
 
     tela.blit(superficie, retangulo)
+
+
+def registrar_escolha(estado, resposta):
+    caso_atual = estado["caso_atual"]
+    id_caso = caso_atual["id"]
+    escolhas = estado["escolhas"]
+
+    escolhas[id_caso] = resposta

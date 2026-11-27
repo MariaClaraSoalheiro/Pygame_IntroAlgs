@@ -3,7 +3,7 @@ import pygame
 
 from src.sprites import GerenciadorSprites
 from src.dados import carregar_casos
-from src.funcoes import carregar_imagem, desenhar_texto_centralizado
+from src.funcoes import carregar_imagem, desenhar_texto_centralizado, registrar_escolha
 
 from src.config import (
     COR_FUNDO,
@@ -33,6 +33,7 @@ def criar_bancada(largura, altura):
         "casos": casos,
         "indice_caso": indice_caso,
         "caso_atual": caso_atual,
+        "escolhas": {},
         "imagem": imagem,
         "pontuacao": 0,
         "vidas": VIDAS_INICIAIS,
@@ -65,6 +66,7 @@ def tratar_evento_bancada(evento, estado):
     elif resultado in classificacoes:
 
         resposta = classificacoes[resultado]
+        registrar_escolha(estado, resposta)
         caso_atual = estado["caso_atual"]
 
         estado["mensagem"] = ""
