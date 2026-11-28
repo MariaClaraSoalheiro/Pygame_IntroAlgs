@@ -3,7 +3,7 @@ import pygame
 
 from src.sprites import GerenciadorSprites
 from src.dados import carregar_casos
-from src.funcoes import carregar_imagem, desenhar_texto_centralizado
+from src.funcoes import carregar_imagem, desenhar_texto_centralizado, verificar_vitoria, verificar_derrota
 
 from src.config import (
     COR_FUNDO,
@@ -23,10 +23,13 @@ def criar_bancada(largura, altura):
     gerenciador = GerenciadorSprites(largura, altura)
 
     casos = carregar_casos()
-    indice_caso = 1
+    indice_caso = 0
     caso_atual = casos[indice_caso]
 
-    imagem = carregar_imagem(caso_atual["imagem"], TAMANHO_IMAGEM)
+    imagem = None
+
+    if "imagem" in caso_atual:
+        imagem = carregar_imagem(caso_atual["imagem"], TAMANHO_IMAGEM)
 
     estado = {
         "gerenciador": gerenciador,
@@ -35,6 +38,7 @@ def criar_bancada(largura, altura):
         "caso_atual": caso_atual,
         "imagem": imagem,
         "pontuacao": 0,
+        "acertos": 0,
         "vidas": VIDAS_INICIAIS,
         "mensagem": "",
         "fim_de_jogo": False,
@@ -45,16 +49,18 @@ def criar_bancada(largura, altura):
 
     return estado
 
+def tratar_evento_bancada(evento, estado):     #macla mexeu aqui
 
-def tratar_evento_bancada(evento, estado):
-
+    # Impede novas classificações após o encerramento.
     if estado["fim_de_jogo"]:
         return
 
+    # Identifica o botão clicado pelo jogador.
     resultado = estado["gerenciador"].tratar_evento_mouse(evento)
 
+    # Relaciona os botões às classificações dos casos.
     classificacoes = {
-        "HUMAN": "HUMAN",
+        "HUMAN": "HUMANO",
         "AI_GENERATED": "GERADO POR IA",
         "INCONCLUSIVE": "INCONCLUSIVO"
     }
@@ -69,19 +75,40 @@ def tratar_evento_bancada(evento, estado):
 
         estado["mensagem"] = ""
 
-        if resultado != "INCONCLUSIVE":
+        # Verifica a classificação escolhida.
+        if resposta == caso_atual["classificacao"]:
+            estado["pontuacao"] += PONTOS_POR_ACERTO
+            estado["acertos"] += 1
+        else:
+            estado["vidas"] -= 1
 
-            if resposta == caso_atual["classificacao"]:
-                estado["pontuacao"] += PONTOS_POR_ACERTO
-            else:
-                estado["vidas"] -= 1
+        # Conta a publicação que acabou de ser analisada.
+        casos_analisados = estado["indice_caso"] + 1
 
-        # Verificando se o jogador ainda tem vidas.
-        if estado["vidas"] == 0:
+        # Verifica se o jogador venceu.
+        vitoria = verificar_vitoria(
+            estado["acertos"],
+            estado["vidas"],
+            casos_analisados
+        )
+
+        # Verifica se o jogador perdeu.
+        derrota = verificar_derrota(
+            estado["vidas"],
+            estado["acertos"],
+            casos_analisados
+        )
+
+        if vitoria:
             estado["fim_de_jogo"] = True
+            estado["resultado_final"] = "VITORIA"
+
+        elif derrota:
+            estado["fim_de_jogo"] = True
+            estado["resultado_final"] = "DERROTA"
 
         else:
-            # Avancando para o proximo caso.
+            # Avança para a próxima publicação.
             estado["indice_caso"] += 1
 
             if estado["indice_caso"] < len(estado["casos"]):
@@ -89,13 +116,13 @@ def tratar_evento_bancada(evento, estado):
                 indice = estado["indice_caso"]
                 estado["caso_atual"] = estado["casos"][indice]
 
-                estado["imagem"] = carregar_imagem(
-                    estado["caso_atual"]["imagem"], TAMANHO_IMAGEM
-                )
+                estado["imagem"] = None
 
-            else:
-                estado["fim_de_jogo"] = True
-
+                if "imagem" in estado["caso_atual"]:
+                    estado["imagem"] = carregar_imagem(
+                        estado["caso_atual"]["imagem"],
+                        TAMANHO_IMAGEM
+                    )
 
 def desenhar_bancada(tela, largura, altura, estado):
 
@@ -124,8 +151,10 @@ def desenhar_bancada(tela, largura, altura, estado):
 
     # Exibindo a imagem da publicacao.
     imagem = estado["imagem"]
-    retangulo_imagem = imagem.get_rect(center=(largura // 2, 220))
-    tela.blit(imagem, retangulo_imagem)
+
+    if imagem is not None:
+        retangulo_imagem = imagem.get_rect(center=(largura // 2, 220))
+        tela.blit(imagem, retangulo_imagem)
 
     # Exibindo a legenda da publicacao.
     desenhar_texto_centralizado(
